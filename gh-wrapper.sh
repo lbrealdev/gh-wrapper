@@ -16,12 +16,11 @@ function check_github_repository() {
 function git_clone() {
   REPOSITORY="$1"
   CLONE_URL="https://github.com/${GITHUB_USER}/${REPOSITORY}.git"
-  AUTH_CLONE_URL=$(echo "$CLONE_URL" | sed -E 's/https:\/\//https:\/\/'"$GITHUB_TOKEN"'@/')
   if [ "$(check_github_repository "$@")" == "404" ] || [ "$(check_github_repository "$@")" == "401" ]; then
     printf "Repository Not Found!"
   elif [ "$(check_github_repository "$@")" == "200" ]; then
-    printf "Cloning into '%s'..." "$REPOSITORY"
-    git clone "$AUTH_CLONE_URL" -q
+    printf "Cloning into '%s'...\n" "$REPOSITORY"
+    echo "$CLONE_URL" | sed -E 's/https:\/\//https:\/\/'"$GITHUB_TOKEN"'@/' | xargs git clone -q
   fi
 }
 
