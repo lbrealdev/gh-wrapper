@@ -1,5 +1,5 @@
 # gh-wrapper
-Simple shell for github.
+Simple shell script for github clone repository.
 
 ### Use
 
