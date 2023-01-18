@@ -2,26 +2,27 @@
 
 set -euo pipefail
 
-GITHUB_USER="$GH_USER"
-GITHUB_TOKEN="$GH_TOKEN"
-
-function check_github_repository() {
-  curl \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-    -s "https://api.github.com/repos/${GITHUB_USER}/${1}" | jq -r \
-    'if .message == "Not Found" then "404" elif .message == "Bad credentials" then "401" else "200" end'
+# Get the currently authenticated user.
+function gh_graphql_owner() {
+  GITHUB_OWNER=$(
+  gh api graphql -f query='
+    query {
+      viewer {
+        login
+      }
+    }' | jq -r '.data.viewer.login'
+  )
 }
 
-function git_clone() {
+function gh_setup_git() {
+  gh auth setup-git
+}
+
+function gh_clone_repository() {
   REPOSITORY="$1"
-  CLONE_URL="https://github.com/${GITHUB_USER}/${REPOSITORY}.git"
-  if [ "$(check_github_repository "$@")" == "404" ] || [ "$(check_github_repository "$@")" == "401" ]; then
-    printf "Repository not found or invalid credentials!"
-  elif [ "$(check_github_repository "$@")" == "200" ]; then
-    printf "Cloning into '%s'...\n" "$REPOSITORY"
-    echo "$CLONE_URL" | sed -E 's/https:\/\//https:\/\/'"$GITHUB_TOKEN"'@/' | xargs git clone -q
-  fi
+  gh_graphql_owner
+  gh_setup_git
+  gh repo clone "$GITHUB_OWNER"/"$REPOSITORY"
 }
 
-git_clone "$@"
+gh_clone_repository "$@"

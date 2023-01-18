@@ -1,13 +1,25 @@
 # gh-wrapper
-Simple shell script for github clone repository.
+Simple shell script with `gh cli` wrapped.
 
 ### Use
 
-```shell
-export GH_USER="<github-user>"
-export GH_TOKEN="<github-access-token>"
+To run this script, make sure you have gh cli installed and authenticated with your token.
 
-./gh-wrapper <repository>
+Authenticate with a GitHub host using a PAT (personal access token):
+```shell
+echo "<your-github-token>" | gh auth login --with-token
+```
+
+To verify that your login is correct, run:
+```shell
+gh auth status
+```
+
+**NOTE**: Once authenticated, you will remain logged in until you log out or the token used expires.
+
+To clone your repository run:
+```shell
+./gh-wrapper <repository-name>
 ```
 
 Create a syslink to run **`gh-wrapper.sh`** from anywhere in your terminal:
