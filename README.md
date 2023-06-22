@@ -1,12 +1,12 @@
 # Git scripts
 
-## gh-wrapper
+## gh-wrapper (gh repo clone)
 
 Simple shell script with `gh cli` wrapped.
 
 ### Use
 
-To run this script, make sure you have [gh cli](https://github.com/cli/cli) installed and authenticated with your token.
+To run this script, make sure you have [GH CLI](https://github.com/cli/cli) installed and authenticated with your token.
 
 Authenticate with a GitHub host using a PAT ([Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)):
 ```shell
@@ -32,7 +32,7 @@ ln -s /script/absolute/path/gh-wrapper.sh /usr/local/gh-wrapper.sh
 gh-wrapper.sh <repository>
 ```
 
-## git-wrapper (clone)
+## git-wrapper (git clone)
 
 Simple shell script with `git` wrapped.
 
